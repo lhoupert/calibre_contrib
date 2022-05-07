@@ -45,9 +45,12 @@ class Mediapart(BasicNewsRecipe):
     keep_only_tags = [
         dict(name='h1'),
         dict(name='div', **classes('author')),
-        classes('introduction content-article')
+        classes('news__heading__top__intro news__body__center__article')
     ]
-    remove_tags = [classes('login-subscribe print-source_url')]
+    remove_tags = [
+        classes('login-subscribe print-source_url'),
+        dict(name='svg'),
+    ]
     conversion_options = {'smarten_punctuation': True}
 
     masthead_url = "https://raw.githubusercontent.com/lhoupert/calibre_contrib/main/mediapart_masthead.png"
@@ -163,7 +166,7 @@ class Mediapart(BasicNewsRecipe):
                     date = article.find('time', datetime=True)['datetime']
                     article_date = datetime.strptime(date, '%Y-%m-%d')
                     # Add French timezone to date of the article for date check
-                    article_date = article_date.replace(tzinfo=timezone.utc) + timedelta(hours=1)                    
+                    article_date = article_date.replace(tzinfo=timezone.utc) + timedelta(hours=1)
                     if article_date < self.oldest_article_date:
                         print("article_date < self.oldest_article_date\n")
                         continue
